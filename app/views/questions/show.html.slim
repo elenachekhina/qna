@@ -1,0 +1,10 @@
+h1= @question.title
+p= @question.body
+- if current_user&.author_of? @question
+  = button_to 'Delete question', question_path(@question), method: :delete
+
+div id='answers'
+  - @question.answers.each do |answer|
+    = render answer if answer.persisted?
+
+= render 'answers/new', answer: @new_answer

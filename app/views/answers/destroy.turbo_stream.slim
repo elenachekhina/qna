@@ -1,0 +1,7 @@
+= turbo_stream.update "answers" do
+  div id='answers'
+    - @question.answers.each do |answer|
+      = render answer if answer.persisted?
+
+= turbo_stream.update "flash" do
+  = render 'shared/flash'

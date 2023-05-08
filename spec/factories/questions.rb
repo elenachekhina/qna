@@ -1,10 +1,20 @@
 FactoryBot.define do
-  factory :question do
-    title { "MyString" }
-    body { "MyText" }
+  sequence :title do |n|
+    "MyTitle#{n}"
+  end
 
-    trait :invalid do
-      title { nil }
-    end
+  sequence :body do |n|
+    "MyBody#{n}"
+  end
+
+  factory :question do
+    association :author_id, factory: :user
+
+    title
+    body
+  end
+
+  trait :invalid do
+    title { nil }
   end
 end

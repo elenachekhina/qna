@@ -1,0 +1,4 @@
+div id = id="new_question_errors_#{@question.id}"
+  = render 'shared/errors', resource: @question
+
+= render 'questions/form', question: @question
