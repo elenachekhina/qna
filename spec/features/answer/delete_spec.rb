@@ -26,10 +26,11 @@ feature 'User can delete his answers', %q{
     end
 
     scenario 'tries to delete not his answer' do
-      create :answer, question: question, author: users[0]
+      create :answer, question: question, author: users[1]
       visit question_path(question)
+
       within '#answers' do
-        expect(page).not_to have_link 'Delete'
+        expect(page).not_to have_button 'Delete'
       end
     end
   end
@@ -39,7 +40,7 @@ feature 'User can delete his answers', %q{
       create :answer, question: question, author: users[0]
       visit question_path(question)
       within '#answers' do
-        expect(page).not_to have_link 'Delete'
+        expect(page).not_to have_button 'Delete'
       end
     end
   end
