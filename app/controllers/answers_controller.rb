@@ -1,11 +1,13 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[destroy]
+  before_action :load_answer, only: %i[destroy update edit mark]
 
   def new
     @answer = @question.answers.build
   end
+
+  def edit; end
 
   def create
     @answer = @question.answers.build(answer_params)
@@ -45,6 +47,21 @@ class AnswersController < ApplicationController
         end
       end
 
+    end
+  end
+
+  def update
+    @answer.update(answer_params)
+  end
+
+  def mark
+    @question = @answer.question
+    old_answer = @question.answers.find_by(mark: true)
+    if @answer == old_answer
+      @answer.update(mark: false)
+    else
+      old_answer.update(mark: false) unless old_answer.nil?
+      @answer.update(mark: true)
     end
   end
 

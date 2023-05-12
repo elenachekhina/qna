@@ -1,10 +1,8 @@
-h1= @question.title
-p= @question.body
-- if current_user&.author_of? @question
-  = button_to 'Delete question', question_path(@question), method: :delete
+= turbo_frame_tag id=dom_id(@question)
+  = render 'questions/show_question', question: @question
 
 div id='answers'
-  - @question.answers.each do |answer|
+  - @question.answers.order(mark: :desc, created_at: :asc).each do |answer|
     = render answer if answer.persisted?
 
 = render 'answers/new', answer: @new_answer

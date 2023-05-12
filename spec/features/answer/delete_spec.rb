@@ -9,14 +9,16 @@ feature 'User can delete his answers', %q{
   given(:users) { create_list(:user, 2) }
   given(:question) { create(:question, author: users[0]) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(users[0])
+      visit questions_path
     end
 
     scenario 'tries to delete his answer' do
       answer = create :answer, question: question, author: users[0]
       visit question_path(question)
+
       within '#answers' do
         click_on 'Delete'
       end
@@ -35,7 +37,7 @@ feature 'User can delete his answers', %q{
     end
   end
 
-  describe 'Unauthenticated user' do
+  describe 'Unauthenticated user', js: true do
     scenario 'tries to delete any question' do
       create :answer, question: question, author: users[0]
       visit question_path(question)

@@ -20,7 +20,7 @@ RSpec.describe AnswersController, type: :request do
     end
   end
 
-  describe 'POST #create' do
+  describe 'POST #create', js: true do
     before { sign_in(user) }
 
     context 'with valid attributes' do
@@ -47,7 +47,7 @@ RSpec.describe AnswersController, type: :request do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'DELETE #destroy', js: true do
     before { sign_in(user) }
     let!(:answer) { create(:answer, question: question, author: user) }
 
@@ -55,5 +55,56 @@ RSpec.describe AnswersController, type: :request do
       expect { delete answer_path(answer) }.to change(question.answers, :count).by(-1)
                                                         .and change(user.answers, :count).by(-1)
     end
+  end
+
+  describe 'PATCH #update' do
+    before { sign_in(user) }
+    let!(:answer) { create(:answer, question: question, author: user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch answer_path(answer, answer: { body: 'new body' }), params: { format: :turbo_stream }
+        expect(answer.reload.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch answer_path(answer, answer: { body: 'new body' }), params: { format: :turbo_stream }
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not change answer attributes' do
+        expect do
+          patch answer_path(answer, answer: { body: '' }), params: { format: :turbo_stream }
+        end.to_not change(answer, :body)
+      end
+
+      it 'renders update view' do
+        patch answer_path(answer, answer: { body: 'new body' }), params: { format: :turbo_stream }
+        expect(response).to render_template :update
+      end
+    end
+  end
+
+  describe 'POST #mark' do
+    before { sign_in(user) }
+
+    context 'mark answer as best' do
+
+      it 'changes mark to true' do
+        answer = create(:answer, question: question, author: user)
+        post mark_answer_path(answer), params: { format: :turbo_stream }
+        expect(answer.reload.mark).to eq true
+      end
+
+      it 'changes mark to false' do
+        answer = create(:answer, question: question, author: user, mark: true)
+        post mark_answer_path(answer), params: { format: :turbo_stream }
+        expect(answer.reload.mark).to eq false
+      end
+
+    end
+
   end
 end

@@ -2,5 +2,6 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :author, class_name: 'User'
 
-  validates :body, presence: true
+  validates :body, presence: true, length: {minimum: 1}
+
 end
