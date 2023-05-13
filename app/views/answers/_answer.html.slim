@@ -1,3 +1,15 @@
-li = answer.body
-- if current_user&.author_of? answer
-  = button_to 'Delete', answer_path(answer), method: :delete
+li
+  div id="answer_#{answer.id}"
+    - if answer.mark
+      p Best answer
+
+    - if current_user&.author_of? answer
+      = turbo_frame_tag id=dom_id(answer)
+        = link_to answer.body, edit_answer_path(answer)
+      = button_to 'Delete', answer_path(answer), method: :delete
+    - else
+      p = answer.body
+
+    - if current_user&.author_of? answer.question
+      = button_to 'Mark', mark_answer_path(answer)
+

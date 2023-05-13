@@ -3,7 +3,7 @@ FactoryBot.define do
     association :question, factory: :question
 
     sequence :body do |n|
-      "MyBody#{n}"
+      "MyAnswerBody#{n}"
     end
   end
 

@@ -76,4 +76,34 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    before { sign_in(user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :turbo_stream
+
+        expect(question.reload.title).to eq 'new title'
+        expect(question.reload.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :turbo_stream
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not change answer attributes' do
+        patch :update, params: { id: question, question: { title: '', body: '' } }, format: :turbo_stream
+        expect(question.reload.title).to eq question.title
+        expect(question.reload.body).to eq question.body
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: { title: '', body: '' } }, format: :turbo_stream
+        expect(response).to render_template :update
+      end
+    end
+  end
 end
