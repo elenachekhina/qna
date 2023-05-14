@@ -41,10 +41,15 @@ class QuestionsController < ApplicationController
   private
 
   def load_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
+  end
+
+  def remove_files
+    remove_files = question_params[:remove_files]
+    ActiveStorage::Attachment.find(remove_files).each(&:purge)
   end
 end

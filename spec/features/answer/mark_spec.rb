@@ -67,15 +67,11 @@ feature 'User can mark best answer on his question', %q{
     end
 
     xscenario 'mark answer and it stand first place' do
-      # не смогла сделать этот тест, сортировка работает в браузере, но не работает тут
-      # как заставить дождаться ответа (?) turbo-frame (или тут что-то другое) я не нашла
       visit question_path(question)
 
       within "#answer_#{answers[1].id}" do
         click_on "Mark"
       end
-
-      sleep(10)
 
       expect(page.body).to match /.*#{answers[1].body}.*#{answers[0].body}.*/m
     end

@@ -3,4 +3,14 @@
   = f.text_field :title
   = f.label :body
   = f.text_area :body
+  = f.label :files
+  = f.file_field :files, multiple: true
+  - if question.files.attached?
+    p
+      = f.collection_check_boxes :files, question.files, :signed_id, :filename.to_s do |b|
+        p
+          = b.check_box(checked: true)
+          = b.label
+
+
   = f.submit 'Ask'

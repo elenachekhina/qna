@@ -8,7 +8,7 @@ feature 'User can edit his question', %q{
 
   given!(:user) {create(:user)}
   given!(:other_user) {create(:user)}
-  given!(:question) {create(:question, author: user)}
+  given!(:question) {create(:question, author: user, with_attachment: true)}
 
   describe 'Authenticated user tries to edit his question', js: true do
     background do
@@ -43,6 +43,17 @@ feature 'User can edit his question', %q{
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Body can't be blank"
       expect(page).to have_selector 'textarea'
+    end
+
+    scenario 'delete question`s files' do
+      visit question_path(question)
+
+      click_on "Edit question"
+
+      uncheck('rails_helper.rb', allow_label_click: true)
+      click_button 'Ask'
+
+      expect(page).not_to have_link 'rails_helper.rb'
     end
   end
 
