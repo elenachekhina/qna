@@ -4,3 +4,11 @@
     = f.label :body
     = f.text_area :body
     = f.submit 'Save'
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+    - if answer.files.attached?
+      p
+        = f.collection_check_boxes :files, answer.files, :signed_id, :filename.to_s do |b|
+          p
+            = b.check_box(checked: true)
+            = b.label

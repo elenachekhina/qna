@@ -9,7 +9,7 @@ feature 'User can edit his answer', %q{
   given!(:user) {create(:user)}
   given!(:other_user) {create(:user)}
   given!(:question) {create(:question, author: user)}
-  given!(:answer) { create(:answer, question: question, author: user) }
+  given!(:answer) { create(:answer, question: question, author: user, with_attachment: true) }
 
   describe 'Authenticated user tries to edit his answer', js: true do
     background do
@@ -51,6 +51,19 @@ feature 'User can edit his answer', %q{
       expect(page).to have_content answer.body
       expect(page).to have_content "Body can't be blank"
       expect(page).to have_selector 'textarea'
+    end
+
+    scenario 'delete answer`s files' do
+      visit question_path(question)
+
+      within '#answers' do
+        click_on "#{answer.body}"
+      end
+
+      uncheck('rails_helper.rb', allow_label_click: true)
+      click_button 'Save'
+
+      expect(page).not_to have_link 'rails_helper.rb'
     end
   end
 

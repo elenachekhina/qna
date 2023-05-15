@@ -18,6 +18,10 @@ module Qna
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # Store files on Amazon S3.
+    # config.active_storage.service = :amazon
+    # config.aws_bucket = 'qna-bucket-cheha'
+    # config.aws_acl = 'public-read'
 
     config.generators do |g|
       g.test_framework :rspec,

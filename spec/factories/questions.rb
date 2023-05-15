@@ -12,6 +12,16 @@ FactoryBot.define do
 
     title
     body
+
+    transient do
+      with_attachment { false }
+    end
+
+    after(:build) do |question, evaluator|
+      if evaluator.with_attachment
+        question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
+      end
+    end
   end
 
   trait :invalid do
