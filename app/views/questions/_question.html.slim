@@ -1,3 +1,4 @@
 tr
-  td = "#{question.id}. #{question.title}"
+  td
+    = link_to question.title, question_path(question), class: "text-decoration-none"
   td = question.body

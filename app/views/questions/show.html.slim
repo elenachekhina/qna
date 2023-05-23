@@ -1,8 +1,6 @@
 = turbo_frame_tag id=dom_id(@question)
   = render 'questions/show_question', question: @question
 
-div id='answers'
-  - @question.answers.order(mark: :desc, created_at: :asc).each do |answer|
-    = render answer if answer.persisted?
+= render 'answers/answers', question: @question
 
 = render 'answers/new', answer: @new_answer

@@ -5,12 +5,14 @@ class AnswersController < ApplicationController
 
   def new
     @answer = @question.answers.build
+    3.times { @answer.links.build }
   end
 
   def edit; end
 
   def create
     @answer = @question.answers.build(answer_params)
+
     respond_to do |format|
       format.html do
         if @answer.save
@@ -23,10 +25,12 @@ class AnswersController < ApplicationController
       format.turbo_stream do
         if @answer.save
           @new_answer = @question.answers.new
+          @new_answer.links.new
           flash[:notice] = "Your answer successfully created."
           render
         else
           @new_answer = @answer
+          @new_answer.links.new
           render
         end
       end
@@ -76,6 +80,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files: []).merge(author: current_user)
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy]).merge(author: current_user)
   end
+
 end

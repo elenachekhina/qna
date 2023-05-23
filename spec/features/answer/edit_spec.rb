@@ -27,12 +27,12 @@ feature 'User can edit his answer', %q{
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
       within form do
         fill_in :answer_body, with: 'New answer body'
-        click_button :commit
+        click_button 'Answer'
       end
 
       expect(page).not_to have_content answer.body
       expect(page).to have_content 'New answer body'
-      expect(page).not_to have_selector 'textarea'
+      expect(page).not_to have_selector "#inline_answer_#{answer.id}"
     end
 
     scenario 'edit answer with errors' do
@@ -45,7 +45,7 @@ feature 'User can edit his answer', %q{
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
       within form do
         fill_in :answer_body, with: ''
-        click_button :commit
+        click_button 'Answer'
       end
 
       expect(page).to have_content answer.body
@@ -58,10 +58,9 @@ feature 'User can edit his answer', %q{
 
       within '#answers' do
         click_on "#{answer.body}"
+        uncheck('rails_helper.rb', allow_label_click: true)
+        click_button 'Answer'
       end
-
-      uncheck('rails_helper.rb', allow_label_click: true)
-      click_button 'Save'
 
       expect(page).not_to have_link 'rails_helper.rb'
     end

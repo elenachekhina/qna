@@ -19,15 +19,15 @@ feature 'User can mark best answer on his question', %q{
 
     scenario 'mark one answer' do
       visit question_path(question)
-
-      within "#answer_#{answers[0].id}" do
+      # save_and_open_page
+      within "div#answer_#{answers[0].id}" do
         click_on "Mark"
       end
 
-      within "#answer_#{answers[0].id}" do
+      within "div#answer_#{answers[0].id}" do
         expect(page).to have_content 'Best answer'
       end
-      within "#answer_#{answers[1].id}" do
+      within "div#answer_#{answers[1].id}" do
         expect(page).not_to have_content 'Best answer'
       end
     end
@@ -35,12 +35,12 @@ feature 'User can mark best answer on his question', %q{
     scenario 'unmark one answer' do
       visit question_path(question)
 
-      within "#answer_#{answers[0].id}" do
+      within "div#answer_#{answers[0].id}" do
         click_on "Mark"
         click_on "Mark"
       end
 
-      within "#answer_#{answers[0].id}" do
+      within "div#answer_#{answers[0].id}" do
         expect(page).not_to have_content 'Best answer'
       end
     end
@@ -48,20 +48,20 @@ feature 'User can mark best answer on his question', %q{
     scenario 'mark other answer' do
       visit question_path(question)
 
-      within "#answer_#{answers[0].id}" do
+      within "div#answer_#{answers[0].id}" do
         click_on "Mark"
       end
 
-      within "#answer_#{answers[1].id}" do
+      within "div#answer_#{answers[1].id}" do
         click_on "Mark"
       end
 
       assert_selector 'div[id="answers"]', wait: 10
 
-      within "#answer_#{answers[0].id}" do
+      within "div#answer_#{answers[0].id}" do
         expect(page).not_to have_content 'Best answer'
       end
-      within "#answer_#{answers[1].id}" do
+      within "div#answer_#{answers[1].id}" do
         expect(page).to have_content 'Best answer'
       end
     end
@@ -69,7 +69,7 @@ feature 'User can mark best answer on his question', %q{
     xscenario 'mark answer and it stand first place' do
       visit question_path(question)
 
-      within "#answer_#{answers[1].id}" do
+      within "div#answer_#{answers[1].id}" do
         click_on "Mark"
       end
 

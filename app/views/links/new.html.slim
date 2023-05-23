@@ -1,0 +1,4 @@
+= turbo_frame_tag id="links-section-new"
+  div#links-section.form-group.border.p-3.mb-3
+    = fields_for 'answer[links_attributes]' do |f|
+      = render 'links/new', form: f
