@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can edit his answer', %q{
+feature 'User can edit his answer', "
   In order to edit incorrect answer
   As an authenticated user
   I'd like to be able to edit my answer
-} do
-
-  given!(:user) {create(:user)}
-  given!(:other_user) {create(:user)}
-  given!(:question) {create(:question, author: user)}
+" do
+  given!(:user) { create(:user) }
+  given!(:other_user) { create(:user) }
+  given!(:question) { create(:question, author: user) }
   given!(:answer) { create(:answer, question: question, author: user, with_attachment: true) }
 
   describe 'Authenticated user tries to edit his answer', js: true do

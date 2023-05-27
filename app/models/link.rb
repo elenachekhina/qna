@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Link < ApplicationRecord
   belongs_to :linkable, polymorphic: true
 
@@ -10,10 +12,9 @@ class Link < ApplicationRecord
   # private
 
   def is_gist_url?
-    uri = URI.parse(self.url)
-    uri.host == 'gist.github.com' && uri.path.match?(/^\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/)
+    uri = URI.parse(url)
+    uri.host == 'gist.github.com' && uri.path.match?(%r{^/[a-zA-Z0-9]+/[a-zA-Z0-9]+$})
   rescue URI::InvalidURIError
     false
   end
-
 end

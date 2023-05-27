@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :request do
@@ -33,14 +35,21 @@ RSpec.describe AnswersController, type: :request do
 
     context 'with valid attributes' do
       it 'saves a new question`s answer in the database' do
-        expect{ post question_answers_path(question, params: { answer: attributes_for(:answer) }) }.to change(question.answers, :count).by(1)
-                                                                                                   .and change(user.answers, :count).by(1)
+        expect do
+          post question_answers_path(question,
+                                     params: { answer: attributes_for(:answer) })
+        end.to change(question.answers, :count).by(1)
+                                               .and change(
+                                                 user.answers, :count
+                                               ).by(1)
       end
 
       it 'saves a new answer`s links in the database' do
-        expect{
-          post question_answers_path(question, params: { answer: attributes_for(:answer, links_attributes: { 0 => attributes_for(:link) }) })
-        }.to change(Link.all, :count).by(1)
+        expect  do
+          post question_answers_path(question,
+                                     params: { answer: attributes_for(:answer,
+                                                                      links_attributes: { 0 => attributes_for(:link) }) })
+        end.to change(Link.all, :count).by(1)
       end
 
       it 'redirect to question show view' do
@@ -51,8 +60,13 @@ RSpec.describe AnswersController, type: :request do
 
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect{ post question_answers_path(question, params: { answer: attributes_for(:answer, :answer_invalid) }) }.to change(question.answers, :count).by(0)
-                                                                                                                    .and change(user.answers, :count).by(0)
+        expect do
+          post question_answers_path(question,
+                                     params: { answer: attributes_for(:answer, :answer_invalid) })
+        end.to change(question.answers, :count).by(0)
+                                               .and change(
+                                                 user.answers, :count
+                                               ).by(0)
       end
       it 're-render new view' do
         post question_answers_path(question, params: { answer: attributes_for(:answer, :answer_invalid) })
@@ -67,7 +81,7 @@ RSpec.describe AnswersController, type: :request do
 
     it 'delete answer from database' do
       expect { delete answer_path(answer) }.to change(question.answers, :count).by(-1)
-                                                        .and change(user.answers, :count).by(-1)
+                                                                               .and change(user.answers, :count).by(-1)
     end
   end
 
@@ -105,7 +119,6 @@ RSpec.describe AnswersController, type: :request do
     before { sign_in(user) }
 
     context 'mark answer as best' do
-
       it 'changes mark to true' do
         answer = create(:answer, question: question, author: user)
         post mark_answer_path(answer), params: { format: :turbo_stream }
@@ -117,8 +130,6 @@ RSpec.describe AnswersController, type: :request do
         post mark_answer_path(answer), params: { format: :turbo_stream }
         expect(answer.reload.mark).to eq false
       end
-
     end
-
   end
 end

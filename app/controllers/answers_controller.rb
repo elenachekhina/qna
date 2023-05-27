@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
   before_action :load_question, only: %i[new create]
@@ -26,7 +28,7 @@ class AnswersController < ApplicationController
         if @answer.save
           @new_answer = @question.answers.new
           @new_answer.links.new
-          flash[:notice] = "Your answer successfully created."
+          flash[:notice] = 'Your answer successfully created.'
           render
         else
           @new_answer = @answer
@@ -38,19 +40,18 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of? @answer
-      @question = @answer.question
-      @answer.destroy
-      respond_to do |format|
-        format.html do
-          redirect_to @question, notice: 'Answer was successfully deleted'
-        end
-        format.turbo_stream do
-          flash[:notice] = 'Answer was successfully deleted'
-          render
-        end
-      end
+    return unless current_user.author_of? @answer
 
+    @question = @answer.question
+    @answer.destroy
+    respond_to do |format|
+      format.html do
+        redirect_to @question, notice: 'Answer was successfully deleted'
+      end
+      format.turbo_stream do
+        flash[:notice] = 'Answer was successfully deleted'
+        render
+      end
     end
   end
 
@@ -80,7 +81,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy]).merge(author: current_user)
+    params.require(:answer).permit(:body, files: [],
+                                          links_attributes: %i[id name url _destroy]).merge(author: current_user)
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Gist < Link
   def body
     GistService.new.gist(url_id)
@@ -6,7 +8,7 @@ class Gist < Link
   private
 
   def url_id
-    path = URI.parse(self.url).path
+    path = URI.parse(url).path
     File.basename(path)
   end
 end

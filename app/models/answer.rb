@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :author, class_name: 'User'
@@ -7,6 +9,5 @@ class Answer < ApplicationRecord
 
   has_many_attached :files
 
-  validates :body, presence: true, length: {minimum: 10}
-
+  validates :body, presence: true, length: { minimum: 10 }
 end

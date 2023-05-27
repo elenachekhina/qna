@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can mark best answer on his question', %q{
+feature 'User can mark best answer on his question', "
   In order to help find best solution
   As an authenticated user
   I'd like to be able to mark best answer to my question
-} do
-
-  given!(:user) {create(:user)}
-  given!(:other_user) {create(:user)}
-  given!(:question) {create(:question, author: user)}
+" do
+  given!(:user) { create(:user) }
+  given!(:other_user) { create(:user) }
+  given!(:question) { create(:question, author: user) }
   given!(:answers) { create_list(:answer, 2, question: question, author: other_user) }
 
   describe 'Authenticated user tries to mark best answer on his question', js: true do
@@ -21,7 +22,7 @@ feature 'User can mark best answer on his question', %q{
       visit question_path(question)
       # save_and_open_page
       within "div#answer_#{answers[0].id}" do
-        click_on "Mark"
+        click_on 'Mark'
       end
 
       within "div#answer_#{answers[0].id}" do
@@ -36,8 +37,8 @@ feature 'User can mark best answer on his question', %q{
       visit question_path(question)
 
       within "div#answer_#{answers[0].id}" do
-        click_on "Mark"
-        click_on "Mark"
+        click_on 'Mark'
+        click_on 'Mark'
       end
 
       within "div#answer_#{answers[0].id}" do
@@ -49,11 +50,11 @@ feature 'User can mark best answer on his question', %q{
       visit question_path(question)
 
       within "div#answer_#{answers[0].id}" do
-        click_on "Mark"
+        click_on 'Mark'
       end
 
       within "div#answer_#{answers[1].id}" do
-        click_on "Mark"
+        click_on 'Mark'
       end
 
       assert_selector 'div[id="answers"]', wait: 10
@@ -70,11 +71,10 @@ feature 'User can mark best answer on his question', %q{
       visit question_path(question)
 
       within "div#answer_#{answers[1].id}" do
-        click_on "Mark"
+        click_on 'Mark'
       end
 
-      expect(page.body).to match /.*#{answers[1].body}.*#{answers[0].body}.*/m
+      expect(page.body).to match(/.*#{answers[1].body}.*#{answers[0].body}.*/m)
     end
-
   end
 end

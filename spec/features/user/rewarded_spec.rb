@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can receive a reward', %q{
+feature 'User can receive a reward', "
   In order to recieve points
   As an authenticated user
   I'd like to be able to receive a reward for best answer
-} do
-
+" do
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
   given!(:reward) { create(:reward, question: question) }

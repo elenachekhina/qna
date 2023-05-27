@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can create answer', %q{
+feature 'User can create answer', "
   In order to answer the question
   As an authenticated user
   I'd like to be able to create answer on the same page
-} do
-
-  given(:user) {create(:user)}
-  given(:question) {create(:question, author: user)}
+" do
+  given(:user) { create(:user) }
+  given(:question) { create(:question, author: user) }
 
   describe 'Authenticated user tries to answer the question', js: true do
     background do

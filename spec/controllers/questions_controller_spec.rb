@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
@@ -52,9 +54,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'saves a new question`s links in the database' do
-        expect {
-          post :create, params: { question: attributes_for(:question, links_attributes: { 0 => attributes_for(:link) }) }
-        }.to change(Link.all, :count).by(1)
+        expect do
+          post :create,
+               params: { question: attributes_for(:question, links_attributes: { 0 => attributes_for(:link) }) }
+        end.to change(Link.all, :count).by(1)
       end
 
       it 'redirect to show view' do
@@ -65,7 +68,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(user.questions, :count)
+        expect do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        end.to_not change(user.questions, :count)
       end
       it 're-render new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
@@ -88,14 +93,16 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'changes answer attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :turbo_stream
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } },
+                       format: :turbo_stream
 
         expect(question.reload.title).to eq 'new title'
         expect(question.reload.body).to eq 'new body'
       end
 
       it 'renders update view' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :turbo_stream
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } },
+                       format: :turbo_stream
         expect(response).to render_template :update
       end
     end

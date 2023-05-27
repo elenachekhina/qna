@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRewards < ActiveRecord::Migration[7.0]
   def change
     create_table :rewards do |t|
@@ -6,6 +8,5 @@ class CreateRewards < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-
   end
 end

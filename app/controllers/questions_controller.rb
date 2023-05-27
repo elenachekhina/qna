@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :load_question, only: %i[show edit update destroy]
 
   def index
     @questions = Question.all
@@ -16,8 +18,7 @@ class QuestionsController < ApplicationController
     @question.build_reward
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @question = current_user.questions.new(question_params)
@@ -33,10 +34,10 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of? @question
-      @question.destroy
-      redirect_to questions_path, notice: 'Question was successfully deleted'
-    end
+    return unless current_user.author_of? @question
+
+    @question.destroy
+    redirect_to questions_path, notice: 'Question was successfully deleted'
   end
 
   private
@@ -46,7 +47,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url, :_destroy], reward_attributes: [:id, :name, :file, :_destroy])
+    params.require(:question).permit(:title, :body, files: [], links_attributes: %i[id name url _destroy],
+                                                    reward_attributes: %i[id name file _destroy])
   end
 
   def remove_files
