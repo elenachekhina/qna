@@ -30,6 +30,36 @@ feature 'User can edit his question', %q{
       expect(page).to have_content 'New question body'
     end
 
+    scenario 'edit question (add links)' do
+      visit question_path(question)
+
+      click_on "Edit question"
+
+      form = find("turbo-frame[id=question_#{question.id}]")
+      within form do
+        click_button 'Add link'
+        fill_in 'Link name', with: 'Link name'
+        fill_in 'Url', with: 'https://ya.ru/'
+        click_button 'Ask'
+      end
+
+      expect(page).to have_link 'Link name'
+    end
+
+    scenario 'edit question (delete links)' do
+      create(:link, linkable: question)
+      visit question_path(question)
+
+      click_on "Edit question"
+
+      form = find("turbo-frame[id=question_#{question.id}]")
+      within form do
+        click_button 'X'
+      end
+
+      expect(page).not_to have_link 'MyLink'
+    end
+
     scenario 'edit question with errors' do
       visit question_path(question)
 

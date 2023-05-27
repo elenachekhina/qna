@@ -9,6 +9,7 @@ feature 'User can view the question with it`s answers', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
   given!(:answers) { create_list(:answer, 2, question: question, author: user) }
+  given!(:link) { create(:link, url: "https://gist.github.com/elenachekhina/ecda8cf62dafcd6807e64fa89bba5649", linkable: question) }
 
   scenario 'Authenticated user tries to view list of questions' do
     sign_in(user)

@@ -35,6 +35,40 @@ feature 'User can edit his answer', %q{
       expect(page).not_to have_selector "#inline_answer_#{answer.id}"
     end
 
+    scenario 'edit answer (add links)' do
+      visit question_path(question)
+
+      within '#answers' do
+        click_on "#{answer.body}"
+      end
+
+      form = find("turbo-frame[id=inline_answer_#{answer.id}]")
+      within form do
+        click_button 'Add link'
+        fill_in 'Link name', with: 'Link name'
+        fill_in 'Url', with: 'https://ya.ru/'
+        click_button 'Answer'
+      end
+
+      expect(page).to have_link 'Link name'
+    end
+
+    scenario 'edit answer (delete links)' do
+      create(:link, linkable: answer)
+      visit question_path(question)
+
+      within '#answers' do
+        click_on "#{answer.body}"
+      end
+
+      form = find("turbo-frame[id=inline_answer_#{answer.id}]")
+      within form do
+        click_button 'X'
+      end
+
+      expect(page).not_to have_link 'MyLink'
+    end
+
     scenario 'edit answer with errors' do
       visit question_path(question)
 

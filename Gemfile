@@ -78,3 +78,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'launchy'
 end
+
+gem 'octokit'
+gem 'dotenv-rails', groups: [:development, :test]
+gem 'image_processing', '~> 1.2'

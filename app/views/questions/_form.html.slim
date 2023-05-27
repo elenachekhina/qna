@@ -16,5 +16,11 @@ div class="container mt-4 p-4 border rounded bg-light"
             .form-check
               = b.check_box(checked: true, class: 'form-check-input')
               = b.label class: 'form-check-label'
+    div.border.p-3.mb-3
+      = render 'links/new', f: f, linkable: question
+
+    - if !question.reward.nil?
+      div.border.p-3.mb-3
+        = render 'rewards/new', f: f
     .form-group
       = f.submit 'Ask', class: "btn btn-primary mt-3"

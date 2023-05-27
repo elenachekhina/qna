@@ -4,10 +4,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :questions, dependent: :destroy, foreign_key: 'author_id', class_name: 'Question', dependent: :destroy, inverse_of: :author
-  has_many :answers, dependent: :destroy, foreign_key: 'author_id', class_name: 'Answer', dependent: :destroy, inverse_of: :author
+  has_many :questions, foreign_key: 'author_id', class_name: 'Question', dependent: :destroy, inverse_of: :author
+  has_many :answers, foreign_key: 'author_id', class_name: 'Answer', dependent: :destroy, inverse_of: :author
+
+  scope :all_rewards, -> (user) { Reward.joins(question: :answers).where(answers: { mark: true, author: user } ) }
 
   def author_of?(post)
     post.author == self
+  end
+
+  def rewards
+    User.all_rewards(self)
   end
 end

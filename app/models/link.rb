@@ -5,4 +5,15 @@ class Link < ApplicationRecord
   validates :name, presence: true
   validates :url, presence: true
 
+  before_save { self.type = is_gist_url? ? 'Gist' : 'Link' }
+
+  # private
+
+  def is_gist_url?
+    uri = URI.parse(self.url)
+    uri.host == 'gist.github.com' && uri.path.match?(/^\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/)
+  rescue URI::InvalidURIError
+    false
+  end
+
 end

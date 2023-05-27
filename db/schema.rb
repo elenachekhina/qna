@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_154721) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_24_185503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_154721) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "author_id", default: 1, null: false
-    t.boolean "mark"
+    t.boolean "mark", default: false
     t.index ["author_id"], name: "index_answers_on_author_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
@@ -60,7 +60,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_154721) do
     t.bigint "linkable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type", default: "Link", null: false
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable"
+    t.index ["type"], name: "index_links_on_type"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -70,6 +72,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_154721) do
     t.datetime "updated_at", null: false
     t.bigint "author_id", default: 1, null: false
     t.index ["author_id"], name: "index_questions_on_author_id"
+  end
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name"
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_rewards_on_question_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -89,4 +99,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_154721) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "author_id"
   add_foreign_key "questions", "users", column: "author_id"
+  add_foreign_key "rewards", "questions"
 end

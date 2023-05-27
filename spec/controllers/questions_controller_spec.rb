@@ -50,6 +50,13 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
+
+      it 'saves a new question`s links in the database' do
+        expect {
+          post :create, params: { question: attributes_for(:question, links_attributes: { 0 => attributes_for(:link) }) }
+        }.to change(Link.all, :count).by(1)
+      end
+
       it 'redirect to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)

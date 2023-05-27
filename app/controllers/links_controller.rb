@@ -1,7 +1,16 @@
 class LinksController < ApplicationController
-  before_action :setup_linkable
+  before_action :setup_linkable, except: %i[show]
+  before_action :load_link, only: %i[show]
+
+  def show
+    @link
+  end
 
   private
+
+  def load_link
+    @link = Link.find(params[:index])
+  end
 
   def setup_linkable
     Rails.logger.debug(params)
@@ -10,12 +19,8 @@ class LinksController < ApplicationController
 
   def linkable
     params.each do |name, value|
-      if Object.const_defined?(name.classify)
-        if name.classify.constantize.respond_to?(:reflect_on_association)
-          if name.classify.constantize.reflect_on_association(:links)
-            return name.classify.constantize
-          end
-        end
+      if Object.const_defined?(name.classify) && name.classify.constantize.respond_to?(:reflect_on_association) && name.classify.constantize.reflect_on_association(:links)
+        return name.classify.constantize
       end
       nil
     end
