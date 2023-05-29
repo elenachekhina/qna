@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can delete his questions', %q{
+feature 'User can delete his questions', "
   In order to any reason
   As an authorised user
   I'd like to be able to delete my questions
-} do
-
+" do
   given(:users) { create_list(:user, 2) }
   given!(:question_1) { create(:question, author: users[0]) }
   given!(:question_2) { create(:question, author: users[1]) }
@@ -36,5 +37,4 @@ feature 'User can delete his questions', %q{
       expect(page).not_to have_button 'Delete question'
     end
   end
-
 end

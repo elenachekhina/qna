@@ -1,4 +1,2 @@
 = turbo_stream.update "answers" do
-  div id='answers'
-    - @question.answers.order(mark: :desc, created_at: :asc).each do |answer|
-      = render answer if answer.persisted?
+  = render 'answers/answers', question: @question

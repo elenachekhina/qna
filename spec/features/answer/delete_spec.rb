@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can delete his answers', %q{
+feature 'User can delete his answers', "
   In order to any reason
   As an authorised user
   I'd like to be able to delete my answers
-} do
-
+" do
   given(:users) { create_list(:user, 2) }
   given(:question) { create(:question, author: users[0]) }
 
@@ -46,5 +47,4 @@ feature 'User can delete his answers', %q{
       end
     end
   end
-
 end

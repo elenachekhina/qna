@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can create question', %q{
+feature 'User can create question', "
   In order to get answer from a community
   As an authenticated user
   I'd like to be able to ask the question
-} do
-
-  given(:user) {create(:user)}
+" do
+  given(:user) { create(:user) }
 
   describe 'Authenticated user' do
     background do
@@ -36,11 +37,23 @@ feature 'User can create question', %q{
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
 
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Ask'
 
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
+    end
+
+    scenario 'asks a question with reward' do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+
+      fill_in 'Name', with: 'Reward name'
+
+      attach_file 'File', "#{Rails.root}/spec/fixtures/star.png"
+      click_on 'Ask'
+
+      expect(page).to have_content 'With reward for best question!'
     end
   end
 

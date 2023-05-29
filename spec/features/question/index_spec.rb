@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can view the question`s list`', %q{
+feature 'User can view the question`s list`', "
   In order to find a similar question
   As an any user
   I'd like to be able to view the question`s list
-} do
-
+" do
   given(:user) { create(:user) }
   given!(:questions) { create_list(:question, 2, author: user) }
 

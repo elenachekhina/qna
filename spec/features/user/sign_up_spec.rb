@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can sign up', %q{
+feature 'User can sign up', "
   In order to have an account
   As an not registered user
   I'd like to be able to sign up
-} do
-
-
-
+" do
   scenario 'Not registered user tries to sign up' do
     visit questions_path
     click_on 'Sign up'
@@ -29,5 +28,4 @@ feature 'User can sign up', %q{
 
     expect(page).to have_content 'Email has already been taken'
   end
-
 end

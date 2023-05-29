@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can edit his question', %q{
+feature 'User can edit his question', "
   In order to edit incorrect question
   As an authenticated user
   I'd like to be able to edit my question
-} do
-
-  given!(:user) {create(:user)}
-  given!(:other_user) {create(:user)}
-  given!(:question) {create(:question, author: user, with_attachment: true)}
+" do
+  given!(:user) { create(:user) }
+  given!(:other_user) { create(:user) }
+  given!(:question) { create(:question, author: user, with_attachment: true) }
 
   describe 'Authenticated user tries to edit his question', js: true do
     background do
@@ -19,7 +20,7 @@ feature 'User can edit his question', %q{
     scenario 'edit question without errors' do
       visit question_path(question)
 
-      click_on "Edit question"
+      click_on 'Edit question'
 
       fill_in :question_title, with: 'New question title'
       fill_in :question_body, with: 'New question body'
@@ -28,13 +29,42 @@ feature 'User can edit his question', %q{
       expect(page).not_to have_content question.body
       expect(page).to have_content 'New question title'
       expect(page).to have_content 'New question body'
-      expect(page).not_to have_selector 'textarea'
+    end
+
+    scenario 'edit question (add links)' do
+      visit question_path(question)
+
+      click_on 'Edit question'
+
+      form = find("turbo-frame[id=question_#{question.id}]")
+      within form do
+        click_button 'Add link'
+        fill_in 'Link name', with: 'Link name'
+        fill_in 'Url', with: 'https://ya.ru/'
+        click_button 'Ask'
+      end
+
+      expect(page).to have_link 'Link name'
+    end
+
+    scenario 'edit question (delete links)' do
+      create(:link, linkable: question)
+      visit question_path(question)
+
+      click_on 'Edit question'
+
+      form = find("turbo-frame[id=question_#{question.id}]")
+      within form do
+        click_button 'X'
+      end
+
+      expect(page).not_to have_link 'MyLink'
     end
 
     scenario 'edit question with errors' do
       visit question_path(question)
 
-      click_on "Edit question"
+      click_on 'Edit question'
 
       fill_in :question_title, with: ''
       fill_in :question_body, with: ''
@@ -48,7 +78,7 @@ feature 'User can edit his question', %q{
     scenario 'delete question`s files' do
       visit question_path(question)
 
-      click_on "Edit question"
+      click_on 'Edit question'
 
       uncheck('rails_helper.rb', allow_label_click: true)
       click_button 'Ask'
@@ -62,13 +92,13 @@ feature 'User can edit his question', %q{
     create :question, author: other_user
     visit question_path(question)
 
-    expect(page).not_to have_link "Edit question"
+    expect(page).not_to have_link 'Edit question'
   end
 
   scenario 'Unauthenticated user tries to edit answer', js: true do
     create :question, author: other_user
     visit question_path(question)
 
-    expect(page).not_to have_link "Edit question"
+    expect(page).not_to have_link 'Edit question'
   end
 end

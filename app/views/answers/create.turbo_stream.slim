@@ -6,6 +6,4 @@
   = render 'shared/flash'
 
 = turbo_stream.replace "new_answer" do
-  div id="new_answer"
-    = render 'shared/errors', resource: @new_answer
-    = render 'answers/form', answer: @new_answer
+  = render 'answers/new', answer: @new_answer
