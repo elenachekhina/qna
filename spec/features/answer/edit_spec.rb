@@ -22,7 +22,7 @@ feature 'User can edit his answer', "
       visit question_path(question)
 
       within '#answers' do
-        click_on "#{answer.body}"
+        click_on answer.body.to_s
       end
 
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
@@ -40,7 +40,7 @@ feature 'User can edit his answer', "
       visit question_path(question)
 
       within '#answers' do
-        click_on "#{answer.body}"
+        click_on answer.body.to_s
       end
 
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
@@ -59,7 +59,7 @@ feature 'User can edit his answer', "
       visit question_path(question)
 
       within '#answers' do
-        click_on "#{answer.body}"
+        click_on answer.body.to_s
       end
 
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
@@ -74,7 +74,7 @@ feature 'User can edit his answer', "
       visit question_path(question)
 
       within '#answers' do
-        click_on "#{answer.body}"
+        click_on answer.body.to_s
       end
 
       form = find("turbo-frame[id=inline_answer_#{answer.id}]")
@@ -92,7 +92,7 @@ feature 'User can edit his answer', "
       visit question_path(question)
 
       within '#answers' do
-        click_on "#{answer.body}"
+        click_on answer.body.to_s
         uncheck('rails_helper.rb', allow_label_click: true)
         click_button 'Answer'
       end
@@ -107,7 +107,7 @@ feature 'User can edit his answer', "
     visit question_path(question)
 
     within '#answers' do
-      expect(page).not_to have_link "#{other_answer.body}"
+      expect(page).not_to have_link other_answer.body.to_s
     end
   end
 
@@ -115,7 +115,7 @@ feature 'User can edit his answer', "
     visit question_path(question)
 
     within '#answers' do
-      expect(page).not_to have_link "#{answer.body}"
+      expect(page).not_to have_link answer.body.to_s
     end
   end
 end
