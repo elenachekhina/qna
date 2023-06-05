@@ -2,6 +2,7 @@
 
 class Question < ApplicationRecord
   include Votable
+  include Commentable
 
   after_create_commit -> { broadcast_append_to "questions", partial: "questions/question_broadcast", locals: { question: self }, target: "questions" }
 

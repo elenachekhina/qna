@@ -10,5 +10,5 @@ module Votable
   def show_votes
     Vote.votable_voices(self).pluck(:voice).reduce(:+) || 0
   end
-  # Your code here...
+
 end
