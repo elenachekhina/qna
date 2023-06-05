@@ -4,13 +4,18 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
 
+
   def index
     @questions = Question.left_joins(:votes).group(:id).order('sum(votes.voice)')
   end
 
   def show
-    @new_answer = @question.answers.new
-    @new_answer.links.new
+    if params[:layout] == 'simple'
+      render 'questions/_show_simple', locals: {question: @question}
+    else
+      @new_answer = @question.answers.new
+      @new_answer.links.new
+    end
   end
 
   def new

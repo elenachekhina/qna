@@ -3,7 +3,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[destroy update edit mark]
+  before_action :load_answer, only: %i[destroy update edit mark show]
 
   def new
     @answer = @question.answers.build
@@ -58,6 +58,8 @@ class AnswersController < ApplicationController
   def update
     @answer.update(answer_params)
   end
+
+  def show; end
 
   def mark
     @question = @answer.question

@@ -3,6 +3,8 @@
 class Answer < ApplicationRecord
   include Votable
 
+  after_create_commit -> { broadcast_append_to "answers", partial: "answers/answer_broadcast", locals: { answer: self }, target: "answers" }
+
   belongs_to :question
   belongs_to :author, class_name: 'User'
   has_many :links, dependent: :destroy, as: :linkable

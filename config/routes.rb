@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable, only: %i[index show new create destroy update edit] do
-    resources :answers, concerns: :votable, only: %i[new create destroy update edit], shallow: true do
+    resources :answers, concerns: :votable, only: %i[new create destroy update edit show], shallow: true do
       member do
         post :mark
       end
