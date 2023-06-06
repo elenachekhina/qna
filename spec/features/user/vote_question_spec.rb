@@ -19,22 +19,23 @@ feature 'User can vote for a question', "
 
     scenario 'User vote for', js: true do
       visit questions_path
-      within('tbody tr:first-child') do
+
+      within("#question_#{question.id}_votes") do
         click_on '↑'
       end
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         expect(page).to have_content '1'
       end
     end
 
     scenario 'User vote against', js: true do
       visit questions_path
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         click_on '↓'
       end
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         expect(page).to have_content '-1'
       end
     end
@@ -42,14 +43,14 @@ feature 'User can vote for a question', "
     scenario 'User cancel voices for and against', js: true do
       visit questions_path
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         click_on '↑'
         click_on '↑'
         click_on '↓'
         click_on '↓'
       end
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         expect(page).to have_content '0'
       end
     end
@@ -64,7 +65,7 @@ feature 'User can vote for a question', "
     scenario 'Author try to vote for/against', js: true do
       visit questions_path
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         expect(page).not_to have_button '↑'
         expect(page).not_to have_button '↓'
       end
@@ -75,7 +76,7 @@ feature 'User can vote for a question', "
     scenario 'User try to vote for/against', js: true do
       visit questions_path
 
-      within('tbody tr:first-child') do
+      within("#question_#{question.id}_votes") do
         expect(page).not_to have_button '↑'
         expect(page).not_to have_button '↓'
       end
