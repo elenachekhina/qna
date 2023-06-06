@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-feature 'User can comment a question', "
+feature 'User can comment an answer', "
   In order to express my opinion about
   As an authenticated user
-  I'd like to be able to comment a question
+  I'd like to be able to comment an answer
 " do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
+  given!(:answer) { create(:answer, author: user, question: question) }
 
   describe 'Authenticated user' do
     background do
@@ -17,25 +18,25 @@ feature 'User can comment a question', "
       visit questions_path
     end
 
-    scenario 'comment a question', js: true do
-      visit questions_path
+    scenario 'comment an answer', js: true do
+      visit question_path(question)
       fill_in :comment_body, with: 'Comment'
       click_on 'Send'
 
-      within("#question_#{question.id}_comments") do
+      within("#answer_#{answer.id}_comments") do
         expect(page).to have_content 'Comment'
       end
     end
 
-    scenario 'comment a question, multiple sessions', js: true do
+    scenario 'comment an answer, multiple sessions', js: true do
       Capybara.using_session('guest') do
-        visit questions_path
+        visit question_path(question)
       end
 
       Capybara.using_session('author') do
         sign_in(user)
         visit questions_path
-        visit questions_path
+        visit question_path(question)
 
         fill_in :comment_body, with: 'Comment'
         click_on 'Send'
@@ -49,8 +50,8 @@ feature 'User can comment a question', "
     end
   end
 
-  scenario 'Unauthenticated user tries to comment a question' do
-    visit questions_path
+  scenario 'Unauthenticated user tries to comment a answer' do
+    visit question_path(question)
 
     expect(page).not_to have_selector 'textfield'
     expect(page).not_to have_button 'Send'

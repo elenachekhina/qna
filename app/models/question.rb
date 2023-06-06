@@ -4,7 +4,10 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
-  after_create_commit -> { broadcast_append_to "questions", partial: "questions/question_broadcast", locals: { question: self }, target: "questions" }
+  after_create_commit lambda {
+                        broadcast_append_to 'questions', partial: 'questions/question_broadcast', locals: { question: self },
+                                                         target: 'questions'
+                      }
 
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User'

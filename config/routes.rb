@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: %i[votable commentable], only: %i[index show new create destroy update edit] do
-    resources :answers, concerns: %i[votable commentable], only: %i[new create destroy update edit show], shallow: true do
+    resources :answers, concerns: %i[votable commentable], only: %i[new create destroy update edit show],
+                        shallow: true do
       member do
         post :mark
       end

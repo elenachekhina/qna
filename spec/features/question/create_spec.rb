@@ -81,7 +81,6 @@ feature 'User can create question', "
         expect(page).to have_content 'text text text'
       end
     end
-
   end
 
   scenario 'Unauthenticated user tries to ask a question' do

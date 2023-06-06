@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-
   def create
     @commentable = commentable
     @comment = @commentable.comments.build(comment_params)
@@ -21,5 +20,4 @@ class CommentsController < ApplicationController
       end
     end
   end
-
 end
