@@ -7,7 +7,7 @@ feature 'User can comment a question', "
   As an authenticated user
   I'd like to be able to comment a question
 " do
-  given(:user) { create(:user) }
+  given!(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
 
   describe 'Authenticated user' do
@@ -18,10 +18,13 @@ feature 'User can comment a question', "
     end
 
     scenario 'comment a question', js: true do
+      visit questions_path
       fill_in :comment_body, with: 'Comment'
       click_on 'Send'
 
-      expect(page).to have_content 'Comment'
+      within("#question_#{question.id}_comments") do
+        expect(page).to have_content 'Comment'
+      end
     end
 
     scenario 'comment a question, multiple sessions', js: true do
@@ -31,6 +34,7 @@ feature 'User can comment a question', "
 
       Capybara.using_session('author') do
         sign_in(user)
+        visit questions_path
         visit questions_path
 
         fill_in :comment_body, with: 'Comment'
@@ -50,5 +54,6 @@ feature 'User can comment a question', "
     visit questions_path
 
     expect(page).not_to have_selector 'textfield'
+    expect(page).not_to have_button 'Send'
   end
 end
