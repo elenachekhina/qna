@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root to: 'questions#index'
   # Defines the root path route ("/")
@@ -9,6 +9,14 @@ Rails.application.routes.draw do
 
   resources :gists, only: %i[show]
   resources :rewards, only: %i[index]
+  resources :users, only: %i[edit update show] do
+    member do
+      get '/confirm_email', to: 'users#confirm_email_new', as: 'confirm_email_new'
+      post '/confirm_email', to: 'users#confirm_email_create', as: 'confirm_email'
+    end
+  end
+
+  get '/confirm_email/:token', to: 'users#confirm_email', as: 'confirm_email_token'
 
   concern :votable do
     resources :votes

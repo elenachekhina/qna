@@ -62,6 +62,7 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'web-console'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
@@ -74,6 +75,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
@@ -85,3 +87,7 @@ gem 'dotenv-rails', groups: %i[development test]
 gem 'faraday-retry'
 gem 'image_processing', '~> 1.2'
 gem 'octokit'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-vkontakte'

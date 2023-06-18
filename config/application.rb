@@ -25,6 +25,8 @@ module Qna
     # config.aws_bucket = 'qna-bucket-cheha'
     # config.aws_acl = 'public-read'
 
+    config.autoload_paths += [config.root.join('app')]
+
     config.generators do |g|
       g.test_framework :rspec,
                        view_specs: false,
