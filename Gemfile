@@ -80,6 +80,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
+  gem 'capybara-email'
 end
 
 gem 'dotenv-rails', groups: %i[development test]
