@@ -5,5 +5,4 @@ class AuthMailer < ApplicationMailer
     @user = params[:user]
     mail(to: @user.email, subject: 'Email confirmation')
   end
-
 end

@@ -18,7 +18,6 @@ Rails.application.routes.draw do
 
   get '/confirm_email/:token', to: 'users#confirm_email', as: 'confirm_email_token'
 
-
   concern :votable do
     resources :votes
   end

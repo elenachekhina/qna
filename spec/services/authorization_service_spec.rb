@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe AuthorizationService do
   let!(:user) { create(:user) }
-  let(:auth_params) { {provider: 'github', uid: '123456'} }
+  let(:auth_params) { { provider: 'github', uid: '123456' } }
   let(:auth) { OmniAuth::AuthHash.new(auth_params) }
   subject { AuthorizationService.new(auth) }
 
@@ -17,12 +17,11 @@ RSpec.describe AuthorizationService do
 
   context 'user has not authorization' do
     context 'user already exists' do
-      let(:auth) {OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: {email: user.email})}
+      let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: user.email }) }
 
       it 'does not create new user' do
         expect { subject.call }.not_to change(User, :count)
       end
-
 
       it 'creates authorization for user' do
         expect { subject.call }.to change(user.authorizations, :count).by(1)
@@ -40,7 +39,7 @@ RSpec.describe AuthorizationService do
     end
 
     context 'user does not exist' do
-      let(:auth) {OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: {email: 'user@mail.com'})}
+      let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: 'user@mail.com' }) }
 
       it 'creates new user' do
         expect { subject.call }.to change(User, :count).by(1)
@@ -63,7 +62,6 @@ RSpec.describe AuthorizationService do
         expect(authorization.provider).to eq 'github'
         expect(authorization.uid).to eq '123456'
       end
-
     end
   end
 end

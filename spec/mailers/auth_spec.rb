@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe AuthMailer, type: :mailer do
   describe 'Confirm email' do

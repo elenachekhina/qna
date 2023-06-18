@@ -2,6 +2,7 @@
 
 class AuthorizationService
   attr_reader :auth
+
   def initialize(auth)
     @auth = auth
   end
@@ -36,5 +37,4 @@ class AuthorizationService
   def confirmation_token
     SecureRandom.urlsafe_base64.to_s
   end
-
 end
