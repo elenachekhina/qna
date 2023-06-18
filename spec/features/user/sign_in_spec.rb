@@ -22,7 +22,7 @@ feature 'User can sign in', "
 
     scenario 'with github' do
       expect(page).to have_content('Sign in with GitHub')
-      mock_auth(:github, 'test@test.com')
+      mock_auth(:github, user.email)
       click_button 'Sign in with GitHub'
       expect(page).to have_content('Successfully authenticated from Github account.')
     end
