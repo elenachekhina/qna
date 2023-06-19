@@ -42,8 +42,6 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    # return unless current_user.author_of? @answer
-
     @question = @answer.question
     @answer.destroy
     respond_to do |format|

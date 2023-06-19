@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AnswerPolicy < ApplicationPolicy
-
   def index?
     true
   end
@@ -33,5 +32,4 @@ class AnswerPolicy < ApplicationPolicy
   def mark?
     user&.id == record.question.author_id
   end
-
 end

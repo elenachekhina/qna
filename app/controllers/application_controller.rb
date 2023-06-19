@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
-  rescue_from Pundit::NotAuthorizedError do |exception|
+  rescue_from Pundit::NotAuthorizedError do |_exception|
     respond_to do |format|
       # format.turbo_stream do
       #   # Render a turbo_stream response that sets a flash message
@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
       # end
       format.html do
         # Set a flash message with the error
-        flash[:alert] = "You are not authorized to perform this action."
+        flash[:alert] = 'You are not authorized to perform this action.'
 
         # Redirect back or to a specific page
         redirect_to(request.referrer || root_path)
