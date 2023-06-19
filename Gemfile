@@ -81,6 +81,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
+  gem 'pundit-matchers'
 end
 
 gem 'dotenv-rails', groups: %i[development test]
@@ -91,3 +92,5 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-vkontakte'
+
+gem "pundit", "~> 2.3"
