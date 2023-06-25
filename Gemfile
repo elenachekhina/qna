@@ -77,6 +77,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'launchy'
+  gem 'pundit-matchers'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
@@ -91,3 +92,5 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-vkontakte'
+
+gem 'pundit', '~> 2.3'
