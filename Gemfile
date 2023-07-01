@@ -94,3 +94,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-vkontakte'
 
 gem 'pundit', '~> 2.3'
+
+gem "doorkeeper", "~> 5.6"
+
+gem "active_model_serializers", "~> 0.10.13"

@@ -1,11 +1,25 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root to: 'questions#index'
   # Defines the root path route ("/")
   # root "articles#index"
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+        get :others, on: :collection
+      end
+
+      resources :questions, only: %i[index show] do
+        resources :answers, only: %i[index show], shallow: true
+      end
+    end
+  end
 
   resources :gists, only: %i[show]
   resources :rewards, only: %i[index]
