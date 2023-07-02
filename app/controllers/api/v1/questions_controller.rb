@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::QuestionsController < Api::V1::BaseController
-  skip_before_action :verify_authenticity_token
   before_action :load_question, only: %i[show update destroy]
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
     @questions = Question.all
@@ -53,15 +49,5 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   def question_params
     params.require(:question).permit(:title, :body, links_attributes: %i[id name url _destroy],
                                                     reward_attributes: %i[id name file _destroy])
-  end
-
-
-
-  def user_not_authorized
-    render json: { error: "You are not authorized to perform this action." }, status: 403
-  end
-
-  def record_not_found
-    render json: { error: "Record not found." }, status: 403
   end
 end

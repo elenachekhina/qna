@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe 'Answers API', type: :request do
-  let(:headers) {{"CONTENT_TYPE" => "application/json",
-                  "ACCEPT" => 'application/json'}}
+  let(:headers) { { 'ACCEPT' => 'application/json' } }
+  let(:access_token) { create(:access_token) }
+  let(:headers_with_token) { headers.merge({ 'Authorization' => "Bearer #{access_token.token}" }) }
+  let(:user) { User.find(access_token.resource_owner_id) }
   let(:answer_public_fields) { %w[id body author_id mark created_at updated_at] }
   let(:question) { create(:question, author: create(:user)) }
 
@@ -15,12 +17,11 @@ describe 'Answers API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) {create(:access_token)}
       let(:answer) { answers.first }
       let(:answers_response) { json['answers'] }
       let(:answer_response) { answers_response.first }
 
-      before {get api_path, params: {access_token: access_token.token}, headers: headers}
+      before {get api_path, headers: headers_with_token}
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -50,10 +51,9 @@ describe 'Answers API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) {create(:access_token)}
       let(:answer_response) { json['answer'] }
 
-      before {get api_path, params: {access_token: access_token.token}, headers: headers}
+      before {get api_path, headers: headers_with_token}
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -80,5 +80,131 @@ describe 'Answers API', type: :request do
         let(:attachable) { answer }
       end
     end
+  end
+
+  describe 'POST /api/v1/questions/:question_id/answers' do
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      context 'with valid attributes' do
+        let(:params) { { answer: attributes_for(:answer) } }
+
+        it 'returns success status' do
+          post api_path, params: params, headers: headers_with_token
+          expect(response).to be_successful
+        end
+
+        it 'creates new question answer' do
+          expect { post api_path, params: params, headers: headers_with_token }.to change(question.answers, :count).by(1)
+        end
+
+        it 'creates question with correct fields' do
+          post api_path, params: params, headers: headers_with_token
+          expect(user.answers.last.body).to eq(params[:answer][:body])
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:params) { { answer: { body: '' } } }
+
+        it 'does not create new answer' do
+          expect { post api_path, params: params, headers: headers_with_token }.not_to change(question.answers, :count)
+        end
+
+        it 'returns an error' do
+          post api_path, params: params, headers: headers_with_token
+          expect(json).to have_key('errors')
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/answers/:id' do
+    let!(:answer) { create(:answer, author: user, question: question) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+      context 'with valid attributes' do
+        let(:params) { { answer: { body: 'New body New body' } } }
+
+        it 'returns success status' do
+          patch api_path, params: params, headers: headers_with_token
+          expect(response).to be_successful
+        end
+
+        it 'update fields' do
+          patch api_path, params: params, headers: headers_with_token
+          answer.reload
+          expect(answer.body).to eq(params[:answer][:body])
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:params) { { answer: { body: '' } } }
+
+        it 'returns an error' do
+          patch api_path, params: params, headers: headers_with_token
+          expect(json).to have_key('errors')
+        end
+      end
+
+      context 'user try to change not his answer' do
+        let!(:other_answer) { create(:answer, author: create(:user), question: question) }
+        let(:params) { { answer: { body: 'New body' } } }
+        let(:api_path) { "/api/v1/answers/#{other_answer.id}" }
+
+        it 'returns an error' do
+          patch api_path, params: params, headers: headers_with_token
+          expect(json).to have_key('errors')
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let!(:answer) { create(:answer, author: user, question: question) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+    let(:method) { :delete }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      context 'user try to destroy his question' do
+        it 'returns 200 status' do
+          delete api_path, headers: headers_with_token
+          expect(response).to be_successful
+        end
+
+        it 'destroy the question' do
+          expect { delete api_path, headers: headers_with_token }.to change(question.answers, :count).by(-1)
+        end
+      end
+
+      context 'user try to destroy not his question' do
+        let!(:other_answer) { create(:answer, author: create(:user), question: question) }
+        let(:api_path) { "/api/v1/questions/#{other_answer.id}" }
+
+        it 'returns 403 status' do
+          delete api_path, headers: headers_with_token
+          expect(response.status).to eq 403
+        end
+
+        it 'destroy the question' do
+          delete api_path, headers: headers_with_token
+
+          expect { delete api_path, headers: headers_with_token }.to change(Answer, :count).by(0)
+        end
+      end
+
+    end
+
   end
 end

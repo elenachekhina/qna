@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'Questions API', type: :request do
   let(:headers) { { 'ACCEPT' => 'application/json' } }
+  let(:access_token) { create(:access_token) }
+  let(:headers_with_token) { headers.merge({ 'Authorization' => "Bearer #{access_token.token}" }) }
+  let(:user) { User.find(access_token.resource_owner_id) }
 
   describe 'GET /api/v1/questions' do
     let(:api_path) { '/api/v1/questions' }
@@ -13,12 +16,11 @@ describe 'Questions API', type: :request do
     let(:question_public_fields) { %w[id title body created_at updated_at] }
 
     context 'authorized' do
-      let(:access_token) {create(:access_token)}
       let!(:questions) { create_list(:question, 2, author: create(:user)) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
 
-      before {get api_path, params: {access_token: access_token.token}, headers: headers}
+      before {get api_path, headers: headers_with_token}
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -53,10 +55,9 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) {create(:access_token)}
       let(:question_response) { json['question'] }
 
-      before {get api_path, params: {access_token: access_token.token}, headers: headers}
+      before {get api_path, headers: headers_with_token}
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -88,10 +89,7 @@ describe 'Questions API', type: :request do
 
   describe 'POST /api/v1/questions' do
     let(:api_path) { '/api/v1/questions' }
-    let(:access_token) { create(:access_token) }
-    let(:headers_with_token) { headers.merge({ 'Authorization' => "Bearer #{access_token.token}" }) }
     let(:method) { :post }
-    let(:user) { User.find(access_token.resource_owner_id) }
 
     it_behaves_like 'API Authorizable'
 
@@ -131,12 +129,10 @@ describe 'Questions API', type: :request do
   end
 
   describe 'PATCH /api/v1/questions/:id' do
-    let(:access_token) { create(:access_token) }
-    let(:user) { User.find(access_token.resource_owner_id) }
+
     let!(:question) { create(:question, author: user) }
     let(:other_question) { create(:question, author: create(:user)) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
-    let(:headers_with_token) { headers.merge({ 'Authorization' => "Bearer #{access_token.token}" }) }
     let(:method) { :patch }
 
     it_behaves_like 'API Authorizable'
@@ -180,20 +176,17 @@ describe 'Questions API', type: :request do
 
         it 'return an error' do
           patch api_path, params: params, headers: headers_with_token
-          expect(json).to have_key('error')
+          expect(json).to have_key('errors')
         end
       end
 
     end
   end
 
-  describe 'DESTROY /api/v1/questions/:id' do
-    let(:access_token) { create(:access_token) }
-    let(:user) { User.find(access_token.resource_owner_id) }
+  describe 'DELETE /api/v1/questions/:id' do
     let!(:question) { create(:question, author: user) }
     let!(:other_question) { create(:question, author: create(:user)) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
-    let(:headers_with_token) { headers.merge({ 'Authorization' => "Bearer #{access_token.token}" }) }
     let(:method) { :delete }
 
     it_behaves_like 'API Authorizable'
