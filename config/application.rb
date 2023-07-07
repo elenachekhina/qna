@@ -25,6 +25,7 @@ module Qna
     # config.aws_bucket = 'qna-bucket-cheha'
     # config.aws_acl = 'public-read'
 
+    config.active_job.queue_adapter = :sidekiq
     config.autoload_paths += [config.root.join('app')]
 
     config.generators do |g|
