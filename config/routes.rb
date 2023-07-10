@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :subscriptions, only: %i[create destroy]
   resources :gists, only: %i[show]
   resources :rewards, only: %i[index]
   resources :users, only: %i[edit update show] do
