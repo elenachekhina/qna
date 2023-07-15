@@ -1,4 +1,4 @@
-= button_to 'Subscribe', subscriptions_path, params: { subscriber: current_user, subscriptable: @question }, method: :post
+= render 'subscriptions/subscription', subscriptable: @question
 = turbo_frame_tag id=dom_id(@question)
   = render 'questions/show_question', question: @question
 
