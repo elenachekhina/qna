@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :answers, foreign_key: 'author_id', class_name: 'Answer', dependent: :destroy, inverse_of: :author
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy, foreign_key: 'subscriber_id', class_name: 'Subscription', inverse_of: :subscriber
 
   has_many :access_grants,
            class_name: 'Doorkeeper::AccessGrant',
