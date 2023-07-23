@@ -1,4 +1,5 @@
 class Comment < ApplicationRecord
+  include Searchable
   belongs_to :user
   belongs_to :commentable, polymorphic: true
 
