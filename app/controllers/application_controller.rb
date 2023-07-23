@@ -14,10 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def search
-    searchable_models = params[:searchables_model] || %w[question answer comment user]
-    @searchables = searchable_models.map do |model|
-      [model, ElasticsearchService.new(model).search(params[:query])]
-    end.to_h
+    @searchables = ElasticsearchService.new(params[:searchables_model], params[:query]).search
     render 'search/index'
   end
 

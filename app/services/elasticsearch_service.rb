@@ -1,17 +1,20 @@
 class ElasticsearchService
-  def initialize(model)
+  def initialize(models, query)
     @client = Elasticsearch::Model.client
-    @klass = klass(model)
+    @searchable_models = models || %w[question answer comment user]
+    @query = query
   end
 
-  def search(query)
-    @klass.find(search_elastic(query))
+  def search
+    @searchable_models.map do |model|
+      [model, klass(model).find(search_elastic(model, @query))]
+    end.to_h
   end
 
   private
 
-  def search_elastic(query)
-    @klass.search("*#{query}*").results.map(&:_id)
+  def search_elastic(model, query)
+    klass(model).search("*#{query}*").results.map(&:_id)
   end
 
   def klass(model)

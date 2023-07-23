@@ -15,8 +15,8 @@ RSpec.describe ApplicationController, type: :controller do
 
     it 'calls ElasticsearchService' do
       get :search, params: { query: query, model: model, searchables_model: [model] }
-      expect(ElasticsearchService).to have_received(:new).with(model)
-      expect(service).to have_received(:search).with(query)
+      expect(ElasticsearchService).to have_received(:new).with([model], query)
+      expect(service).to have_received(:search)
     end
 
     it 'renders search/index' do
