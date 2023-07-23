@@ -73,6 +73,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.2)
       public_suffix (>= 2.0.2, < 6.0)
+    ansi (1.5.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.13.0)
       execjs (~> 2)
@@ -136,6 +137,21 @@ GEM
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
+    elasticsearch (7.4.0)
+      elasticsearch-api (= 7.4.0)
+      elasticsearch-transport (= 7.4.0)
+    elasticsearch-api (7.4.0)
+      multi_json
+    elasticsearch-extensions (0.0.33)
+      ansi
+      elasticsearch
+    elasticsearch-model (7.2.1)
+      activesupport (> 3)
+      elasticsearch (~> 7)
+      hashie
+    elasticsearch-transport (7.4.0)
+      faraday
+      multi_json
     erubi (1.12.0)
     execjs (2.8.1)
     factory_bot (6.2.1)
@@ -143,7 +159,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (2.7.5)
+    faraday (2.7.10)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
@@ -153,7 +169,10 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
-    i18n (1.12.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -185,11 +204,14 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
+    meilisearch (0.24.0)
+      httparty (>= 0.17.1, < 0.22.0)
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
-    minitest (5.18.0)
+    minitest (5.18.1)
     msgpack (1.7.0)
+    multi_json (1.15.0)
     multi_xml (0.6.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -424,6 +446,8 @@ DEPENDENCIES
   devise
   doorkeeper (~> 5.6)
   dotenv-rails
+  elasticsearch-extensions
+  elasticsearch-model
   factory_bot_rails
   faraday-retry
   image_processing (~> 1.2)
@@ -431,6 +455,7 @@ DEPENDENCIES
   jbuilder
   launchy
   letter_opener
+  meilisearch (~> 0.24.0)
   octokit
   omniauth
   omniauth-github

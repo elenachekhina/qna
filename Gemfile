@@ -102,3 +102,7 @@ gem "active_model_serializers", "~> 0.10.13"
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+
+gem "meilisearch", "~> 0.24.0"
+# gem 'elasticsearch'
+gem 'elasticsearch-model'
