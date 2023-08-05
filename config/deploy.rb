@@ -1,7 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.17.3"
 
-server '167.172.39.59', port: 3000, roles: [:web, :app, :db], primary: true
+server '167.172.39.59', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:elenachekhina/qna.git'
 set :application,     'qna'
