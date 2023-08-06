@@ -4,6 +4,7 @@ lock "~> 3.17.3"
 server '167.172.39.59', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:elenachekhina/qna.git'
+set :branch,          'main'
 set :application,     'qna'
 set :user,            'deploy'
 set :puma_threads,    [4, 16]
@@ -52,8 +53,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse origin/master`
-        puts "WARNING: HEAD is not the same as origin/master"
+      unless `git rev-parse HEAD` == `git rev-parse origin/main`
+        puts "WARNING: HEAD is not the same as origin/main"
         puts "Run `git push` to sync changes."
         exit
       end
