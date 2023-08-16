@@ -25,7 +25,9 @@ set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
-
+set :puma_systemctl_user, :system
+set :puma_enable_lingering, fetch(:puma_systemctl_user) != :system
+set :puma_lingering_user, fetch(:user)
 ## Defaults:
 # set :scm,           :git
 # set :branch,        :master
@@ -79,7 +81,7 @@ namespace :deploy do
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
-  # after  :finishing,    :restart
+  after  :finishing,    :restart
 end
 
 # ps aux | grep puma    # Get puma pid
