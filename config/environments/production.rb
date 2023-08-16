@@ -64,6 +64,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "qna_production"
 
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: '167.172.39.59' }
   config.action_mailer.smtp_settings = {
@@ -72,7 +73,7 @@ Rails.application.configure do
     port: 587,
     user_name: Rails.application.credentials[Rails.env.to_sym][:smtp][:username],
     password: Rails.application.credentials[Rails.env.to_sym][:smtp][:password_app],
-    authentication: 'login',
+    authentication: :plain,
     tls: false,
     enable_starttls_auto: true
   }
