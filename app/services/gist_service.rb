@@ -2,7 +2,7 @@
 
 class GistService
   def initialize(client: nil)
-    @client = client || Octokit::Client.new(access_token: ENV.fetch('GITHUB_ACCESS_TOKEN'))
+    @client = client || Octokit::Client.new(access_token: Rails.application.credentials[Rails.env.to_sym][:gist][:github_access_token])
   end
 
   def gist(gist_id)
