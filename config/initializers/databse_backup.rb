@@ -18,7 +18,7 @@ PostgresqlBackup.configure do |config|
   # The folder where files will be stored in the file system.
   # The default is `db/backups` and it will be ignored if you set
   # `repository` to 'S3'.
-  config.backup_folder = '/home/deploy/apps/qna/shared/db'
+  config.backup_folder = 'db/backups'
 
   # Get your access key and secret key from AWS console:
   # IAM -> Users -> Security Credentials tab -> access keys
