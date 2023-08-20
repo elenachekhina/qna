@@ -24,6 +24,6 @@ every 1.day do
 end
 
 every 1.day do
-  rake postgresql_backup:dump
+  rake "postgresql_backup:dump"
 end
 
