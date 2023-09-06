@@ -1,24 +1,21 @@
-# README
+# Q&A
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Educational StackOverflow like project.
+Use Hotwire Turbo for frontend
 
-Things you may want to cover:
+### Versions
+* Ruby 3.2.2
+* Rails 7.0.4
+* PostgreSQL 15.2
+* ElasticSearch 7.17
+* Redis 
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Gems
+* devise
+* pundit
+* omniauth
+* sidekiq
+* rspec-rails
+* capybara
+* sidekiq
+* capistrano
