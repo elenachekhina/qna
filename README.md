@@ -8,7 +8,6 @@ Use Hotwire Turbo for frontend
 * Rails 7.0.4
 * PostgreSQL 15.2
 * ElasticSearch 7.17
-* Redis 
 
 ### Gems
 * devise
