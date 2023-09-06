@@ -16,5 +16,4 @@ Use Hotwire Turbo for frontend
 * sidekiq
 * rspec-rails
 * capybara
-* sidekiq
 * capistrano
